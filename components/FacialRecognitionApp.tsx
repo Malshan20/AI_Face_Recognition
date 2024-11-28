@@ -22,36 +22,39 @@ export default function FacialRecognitionApp() {
 
   return (
     <div className="flex w-full max-w-6xl gap-4">
-      <Card className="flex-grow p-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="webcam">
-              <Camera className="mr-2 h-4 w-4" />
-              Webcam
-            </TabsTrigger>
-            <TabsTrigger value="upload">
-              <Upload className="mr-2 h-4 w-4" />
-              Upload Image
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="webcam" className="mt-4">
-            <WebcamStream />
-            <div className="flex justify-center mt-4">
-              <Button
-                onClick={handleToggleWebcam}
-                variant={isWebcamActive ? "destructive" : "default"}
-              >
-                {isWebcamActive ? "Stop Webcam" : "Start Webcam"}
-              </Button>
-            </div>
-          </TabsContent>
-          <TabsContent value="upload" className="mt-4">
-            <ImageUpload />
-          </TabsContent>
-        </Tabs>
-      </Card>
-      <ResultsSidebar />
+      <div className="flex flex-col w-full">
+        <Card className="flex-grow p-6 mb-4">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="webcam">
+                <Camera className="mr-2 h-4 w-4" />
+                Webcam
+              </TabsTrigger>
+              <TabsTrigger value="upload">
+                <Upload className="mr-2 h-4 w-4" />
+                Upload Image
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="webcam" className="mt-4">
+              <WebcamStream />
+              <div className="flex justify-center mt-4">
+                <Button
+                  onClick={handleToggleWebcam}
+                  variant={isWebcamActive ? "destructive" : "default"}
+                >
+                  {isWebcamActive ? "Stop Webcam" : "Start Webcam"}
+                </Button>
+              </div>
+            </TabsContent>
+            <TabsContent value="upload" className="mt-4">
+              <ImageUpload />
+            </TabsContent>
+          </Tabs>
+        </Card>
+        <Card className="p-6">
+          <ResultsSidebar />
+        </Card>
+      </div>
     </div>
   )
 }
-

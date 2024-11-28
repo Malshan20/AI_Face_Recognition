@@ -29,7 +29,7 @@ export default function ImageUpload() {
   }
 
   const detectFaces = async () => {
-    if (!imageRef.current || !canvasRef.current) return
+    if (!imageRef.current || !canvasRef.current || !image) return
 
     try {
       await tf.ready()
@@ -41,41 +41,47 @@ export default function ImageUpload() {
 
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
 
-      const faces = await Promise.all(predictions.map(async (prediction: any, index: number) => {
-        const { topLeft, bottomRight, landmarks, probability } = prediction
-        const width = bottomRight[0] - topLeft[0]
-        const height = bottomRight[1] - topLeft[1]
+      const faces = await Promise.all(
+        predictions.map(async (prediction: any, index: number) => {
+          const { topLeft, bottomRight, landmarks, probability } = prediction
+          const width = bottomRight[0] - topLeft[0]
+          const height = bottomRight[1] - topLeft[1]
 
-        ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)'
-        ctx.lineWidth = 2
-        ctx.strokeRect(topLeft[0], topLeft[1], width, height)
+          ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)'
+          ctx.lineWidth = 2
+          ctx.strokeRect(topLeft[0], topLeft[1], width, height)
 
-        const faceImage = tf.browser.fromPixels(imageRef.current!)
-          .slice([Math.round(topLeft[1]), Math.round(topLeft[0]), 0], [Math.round(height), Math.round(width), 3])
+          const faceImage = tf.browser.fromPixels(imageRef.current!)
+            .slice(
+              [Math.round(topLeft[1]), Math.round(topLeft[0]), 0],
+              [Math.round(height), Math.round(width), 3]
+            )
 
-        const estimatedAge = estimateAge(faceImage)
-        const gender = classifyGender(faceImage)
-        const name = getNameFromSocialMedia(gender)
+          const estimatedAge = estimateAge(faceImage)
+          const gender = classifyGender(faceImage)
+          const name = getNameFromSocialMedia(gender)
 
-        ctx.fillStyle = 'rgba(0, 255, 0, 0.8)'
-        ctx.font = '12px Arial'
-        ctx.fillText(`Age: ~${estimatedAge}, Gender: ${gender}`, topLeft[0], topLeft[1] - 5)
+          ctx.fillStyle = 'rgba(0, 255, 0, 0.8)'
+          ctx.font = '12px Arial'
+          ctx.fillText(`Age: ~${estimatedAge}, Gender: ${gender}`, topLeft[0], topLeft[1] - 5)
 
-        faceImage.dispose()
+          faceImage.dispose()
 
-        return {
-          id: `face-${index}`,
-          boundingBox: {
-            topLeft: topLeft as [number, number],
-            bottomRight: bottomRight as [number, number],
-          },
-          landmarks: landmarks,
-          probability: probability[0],
-          estimatedAge,
-          gender,
-          name
-        }
-      }))
+          return {
+            id: `face-${index}`,
+            boundingBox: {
+              topLeft: topLeft as [number, number],
+              bottomRight: bottomRight as [number, number],
+            },
+            landmarks: landmarks,
+            probability: probability[0],
+            estimatedAge,
+            gender,
+            name,
+            image, // Include the `image` property
+          }
+        })
+      )
 
       dispatch(setDetectedFaces(faces))
     } catch (error) {
@@ -121,4 +127,3 @@ export default function ImageUpload() {
     </Card>
   )
 }
-

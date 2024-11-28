@@ -17,9 +17,9 @@ export default function ResultsSidebar() {
   }
 
   return (
-    <Card className="w-64 p-4">
+    <Card className="w-full max-w-xs p-4">
       <h2 className="text-lg font-semibold mb-4">Detected Faces</h2>
-      <ScrollArea className="h-[600px]">
+      <ScrollArea className="h-[400px] md:h-[600px]">
         {faces.map((face) => (
           <div
             key={face.id}
@@ -45,4 +45,3 @@ export default function ResultsSidebar() {
     </Card>
   )
 }
-
