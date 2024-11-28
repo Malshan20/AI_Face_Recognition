@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Tensor3D } from '@tensorflow/tfjs'
 
 interface Face {
   image: Tensor3D
