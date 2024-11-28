@@ -101,7 +101,8 @@ export default function WebcamStream() {
             probability: probability[0],
             estimatedAge,
             gender,
-            name
+            name,
+            image: faceImage // Added image property to match Face interface
           }
         }))
 
@@ -164,4 +165,3 @@ export default function WebcamStream() {
     </Card>
   )
 }
-

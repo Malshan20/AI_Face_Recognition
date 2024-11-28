@@ -78,7 +78,7 @@ export default function ImageUpload() {
             estimatedAge,
             gender,
             name,
-            image, // Include the `image` property
+            image: faceImage, // Change to use Tensor3D
           }
         })
       )
@@ -125,5 +125,4 @@ export default function ImageUpload() {
         Upload Image
       </Button>
     </Card>
-  )
-}
+  )} // Closing the return statement properly
